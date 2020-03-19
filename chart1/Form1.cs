@@ -12,12 +12,17 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace chart1
 {
-
-    public partial class Form1 : Form
+    [Guid("7DD14230-1252-4E0D-B900-6E48FB60633E")]
+    public interface IUseCsharpChart
+    {
+        void UseTimer();    // 外部接口以实现c++调用timer的运行
+        void StopTimer();
+    }
+    public partial class Form1 : Form, IUseCsharpChart   // 继承接口
     {
 
-        private Queue<double> dataQueue = new Queue<double>(100);   // 显示100个点
-        private Queue<string> timeQueue = new Queue<string>(100);
+        public Queue<double> dataQueue = new Queue<double>(100);   // 显示100个点
+        public Queue<string> timeQueue = new Queue<string>(100);
 
         private int num = 1;//每次删除增加几个点
 
@@ -31,18 +36,18 @@ namespace chart1
             chart1.Series[0].IsValueShownAsLabel = true;    // 设置是否在Chart中显示坐标点值
             this.chart1.ChartAreas[0].AxisY.Minimum = 0;
             this.chart1.ChartAreas[0].AxisY.Maximum = 100;
-            this.chart1.ChartAreas[0].AxisX.Interval = 5;
+            // this.chart1.ChartAreas[0].AxisX.Interval = 5;
             chart1.ChartAreas[0].Name = "绘图";
             chart1.ChartAreas[0].AxisX.Title = "当前时间(H:M:S)";   // x轴名称
-            chart1.BorderlineWidth = 2;
+            chart1.Series[0].XValueType = ChartValueType.Time;  // X坐标轴数据格式
             chart1.Series[0].Name = "数据1"; //设置数据名称(text)
+            chart1.BorderlineWidth = 2;
             //chart1.Width = 800;
             //chart1.Height = 400;
         }
 
         private void btnstart_Click(object sender, EventArgs e)
         {
-            chart1.Series[0].XValueType = ChartValueType.Time;  // X坐标轴数据格式
             timer1.Enabled = true;
             this.timer1.Start();
             chart1.Series[0].Points.Clear();
@@ -63,7 +68,6 @@ namespace chart1
                 this.chart1.Series[0].Points.AddXY(timeQueue.ElementAt(i), dataQueue.ElementAt(i));
             }
         }
-
 
         private void UpdateQueueValue()
         {
@@ -90,6 +94,19 @@ namespace chart1
             chart1.SaveImage(bmpName, ChartImageFormat.Jpeg);
         }
 
+        public void UseTimer()  // 给外部引用
+        {
+            timer1.Enabled = true;
+            this.timer1.Start();
+            chart1.Series[0].Points.Clear();
+        }
+
+        public void StopTimer()
+        {
+            this.timer1.Stop();
+            Environment.Exit(0);
+        }
 
     }
+
 }

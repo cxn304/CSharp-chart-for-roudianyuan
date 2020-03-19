@@ -6,3 +6,7 @@
 /chart1/bin/Debug
 /chart1/obj/Debug
 /chart1/Properties
+/chart1/bin/x64/Release
+/chart1/obj/x64
+/chart1/obj/chart1.csproj.UnmanagedRegistration.cache
+/chart1/chart1.csproj.user
