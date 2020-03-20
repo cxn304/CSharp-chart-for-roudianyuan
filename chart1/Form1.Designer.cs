@@ -51,7 +51,6 @@
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.Legend = "Legend1";
             series1.Name = "random";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(800, 400);
             this.chart1.TabIndex = 0;
